@@ -7,7 +7,7 @@ import javafx.beans.value.ObservableValue;
 import edu.codingisfunph.math.matrix.Matrix;
 import edu.codingisfunph.math.matrix.EntryChangeListener;
 import edu.codingisfunph.math.matrix.EntryChangeEvent;
-import static edu.codingisfunph.controls.MatrixField.DEFAULT_ELEMENT_SIZE;
+import static edu.codingisfunph.controls.MatrixControl.DEFAULT_ELEMENT_SIZE;
 
 public class MatrixElement extends TextField implements ChangeListener< String >,
                                                         EntryChangeListener {

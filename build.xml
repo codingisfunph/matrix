@@ -29,11 +29,13 @@
     </target>
 
 
-    <target name="matrixDemo.run">
-        <java classname="edu.thinkbox.math.matrix.util.MatrixDemo">
+    <target name="run">
+        <java classname="edu.codingisfunph.controls.MatrixDriverProgram">
           <classpath>
-              <pathelement location="build/jar/thinkbox_math.jar"/>
               <pathelement path="build/classes"/>
+              <fileset dir="C:\Program Files\Java\openjfx-14.0.2.1_windows-x64_bin-sdk\javafx-sdk-14.0.2.1\lib">
+                  <include name="*.jar"/>
+              </fileset>
           </classpath>
         </java>
     </target>

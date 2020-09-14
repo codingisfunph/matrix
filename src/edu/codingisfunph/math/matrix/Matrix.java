@@ -24,7 +24,7 @@ public class Matrix{
       public void setEntry( int row, int column, double value ){
         double oldValue = entries[ row ][ column ];
         entries[ row ][ column ] = value;
-        EntryChangedEvent event = new EntryChangedEvent( row, column, oldValue, value, this );
+        EntryChangeEvent event = new EntryChangeEvent( row, column, oldValue, value, this );
         fireEntryChangeEvent( event );
       }
 
@@ -32,6 +32,7 @@ public class Matrix{
 
       public void addEntryChangeListener( int row, int column, EntryChangeListener listener ){
         String key = String.format( "%d%d", row, column );
+
         if( entryChangeListeners.containsKey( key ) ){
             entryChangeListeners.get( key ).add( listener );
         } else {
@@ -41,11 +42,13 @@ public class Matrix{
         }
       }
 
-      private void fireEntryChangeEvent( EntryChangedEvent event ){
+      private void fireEntryChangeEvent( EntryChangeEvent event ){
           String key = String.format( "%d%d", event.getRow(), event.getColumn() );
 
           for( EntryChangeListener listener : entriesChangeListeners ) listener.entryChanged( event );
-          for( EntryChangeListener listener : entryChangeListeners.get( key ) ) listener.entryChanged( event );
+
+          if( entryChangeListeners.containsKey( key ) )
+            for( EntryChangeListener listener : entryChangeListeners.get( key ) ) listener.entryChanged( event );
       }
 
       public void setRowEntries( int row, double... values ){
@@ -112,6 +115,107 @@ public class Matrix{
             for( int j = 0; j < getColumnCount(); j++ )
                 setEntry( i,  j, ( double ) ( -10 + random.nextInt( 20 ) ) );
       }
+
+      public Matrix negative(){
+        Matrix negativeMatrix = new Matrix( getRowCount(), getColumnCount() );
+
+        for( int i = 0; i < getRowCount(); i++ )
+          for( int j = 0; j < getColumnCount(); j++ )
+            negativeMatrix.setEntry( i, j, entries[ i ][ j ] * -1 );
+
+        return negativeMatrix;
+      }
+
+      public void copyEntries( Matrix matrix ) throws MatrixSizeMismatchException{
+          if( sizeEquals( matrix ) ){
+            for( int i = 0; i < getRowCount(); i++ )
+              for( int j = 0; j < getColumnCount(); j++ )
+                setEntry( i, j, matrix.getEntry( i, j ) );
+          } else {
+            throw new MatrixSizeMismatchException();
+          }
+      }
+
+      public boolean sizeEquals( Matrix matrix ){
+          if( getRowCount() == matrix.getRowCount() &&
+              getColumnCount() == matrix.getColumnCount() )
+              return true;
+          else
+              return false;
+      }
+
+      public Matrix transpose(){
+          Matrix transposedMatrix = new Matrix( getColumnCount(), getRowCount() );
+
+          for( int i = 0; i < getRowCount(); i++ )
+            for( int j = 0; j < getColumnCount(); j++ )
+              transposedMatrix.setEntry( j, i, getEntry( i, j ) );
+
+          return transposedMatrix;
+      }
+
+      public Matrix duplicate(){
+          Matrix duplicate = new Matrix( getRowCount(), getColumnCount() );
+
+          for( int i = 0; i < getRowCount(); i++ )
+            for( int j = 0; j < getColumnCount(); j++ )
+              duplicate.setEntry( i, j, entries[ i ][ j ] );
+
+          return duplicate;
+      }
+
+
+      public Matrix reducedRowEchelon(){
+          Matrix echelonForm = duplicate();
+          reducedRowEchelon( 0, 0, echelonForm );
+          return echelonForm;
+      }
+
+      private void reducedRowEchelon( int pivotRow, int pivotColumn, Matrix echelonForm ){
+          if( ( pivotRow < 0 || pivotRow >= getRowCount() ) ||
+              ( pivotColumn < 0 || pivotColumn >= getColumnCount() ) ) return;
+
+          // Find index of max value in column vector starting from pivot row
+          int max = pivotRow;
+          for( int i = pivotRow + 1; i < getRowCount(); i++ )
+              if( Math.abs( echelonForm.getEntry( i, pivotColumn ) ) > Math.abs( echelonForm.getEntry( max, pivotColumn ) ) ) max = i;
+
+          if( max != pivotRow ){
+            echelonForm.switchRows( pivotRow, max );
+          }
+
+          if( echelonForm.getEntry( pivotRow, pivotColumn ) == 0.0 ){
+            reducedRowEchelon( pivotRow, pivotColumn + 1, echelonForm );
+          } else {
+            double nonzero = 0.0;
+
+            nonzero = ( 1.0 / echelonForm.getEntry( pivotRow, pivotColumn ) );
+            echelonForm.scale( pivotRow,  nonzero );
+
+            for( int i = pivotRow + 1; i < getRowCount(); i++ ){
+              if( echelonForm.getEntry( i, pivotColumn ) != 0.0 ){
+                nonzero = echelonForm.getEntry( i, pivotColumn ) * -1.0;
+                echelonForm.replace( i, pivotRow, nonzero );
+              }
+            }
+
+            for( int j = pivotRow - 1; j >= 0; j--){
+              if( echelonForm.getEntry( j, pivotColumn ) != 0.0 ){
+                nonzero = echelonForm.getEntry( j, pivotColumn ) * -1.0;
+                echelonForm.replace( j, pivotRow, nonzero );
+              }
+            }
+
+            reducedRowEchelon( pivotRow + 1, pivotColumn + 1, echelonForm );
+          }
+      }
+
+
+      public boolean isSquare(){ return getRowCount() == getColumnCount(); }
+
+
+      public static Matrix createColumnMatrix( int rows ){ return new Matrix( rows, 1 ); }
+      public static Matrix createSquareMatrix( int n ){ return new Matrix( n, n ); }
 
       // Variables
       private double entries[][];
