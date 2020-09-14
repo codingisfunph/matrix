@@ -1,0 +1,60 @@
+<project>
+
+    <property environment="env" />
+
+    <path id="build.classpath">
+        <fileset dir="C:\Program Files\Java\openjfx-14.0.2.1_windows-x64_bin-sdk\javafx-sdk-14.0.2.1\lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac includeantruntime="false" srcdir="src" destdir="build/classes">
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/thinkbox_math.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="LinearEquationSystems"/>
+            </manifest>
+        </jar>
+    </target>
+
+
+    <target name="matrixDemo.run">
+        <java classname="edu.thinkbox.math.matrix.util.MatrixDemo">
+          <classpath>
+              <pathelement location="build/jar/thinkbox_math.jar"/>
+              <pathelement path="build/classes"/>
+          </classpath>
+        </java>
+    </target>
+
+    <target name="documentation">
+        <javadoc  destdir="docs/api"
+                  author="true"
+                  version="true"
+                  use="true"
+                  windowtitle="Test API">
+
+                  <packageset dir="src" defaultexcludes="yes">
+                    <include name="edu/thinkbox/math/**"/>
+                  </packageset>
+
+                  <doctitle><![CDATA[<h1>Matrix Class</h1>]]></doctitle>
+                  <bottom><![CDATA[<i>Copyright &#169; 2020 Coding Is Fun. All Rights Reserved.</i>]]></bottom>
+                  <tag name="todo" scope="all" description="To do:"/>
+                  <group title="Matrix Packages" packages="edu.thinkbox.math.matrix.*"/>
+                  <group title="Matrix Utility Packages" packages="edu.thinkbox.math.matrix.util.*"/>
+        </javadoc>
+    </target>
+
+</project>
