@@ -165,37 +165,45 @@ public class Matrix{
       }
 
 
-      public Matrix reducedRowEchelon(){
+      public Matrix reducedRowEchelon( Matrix matrix ) throws MatrixSizeMismatchException {
+          if( getRows() != matrix.getRows() ) throw new MatrixSizeMismatchException();
+
           Matrix echelonForm = duplicate();
-          reducedRowEchelon( 0, 0, echelonForm );
+
+          reducedRowEchelon( 0, 0, echelonForm, matrix );
+
           return echelonForm;
       }
 
-      private void reducedRowEchelon( int pivotRow, int pivotColumn, Matrix echelonForm ){
-          if( ( pivotRow < 0 || pivotRow >= getRowCount() ) ||
-              ( pivotColumn < 0 || pivotColumn >= getColumnCount() ) ) return;
+
+      private void reducedRowEchelon( int pivotRow, int pivotColumn, Matrix echelonForm, Matrix matrix){
+          if( ( pivotRow < 0 || pivotRow >= getRows() ) ||
+              ( pivotColumn < 0 || pivotColumn >= getColumns() ) ) return;
 
           // Find index of max value in column vector starting from pivot row
           int max = pivotRow;
-          for( int i = pivotRow + 1; i < getRowCount(); i++ )
+          for( int i = pivotRow + 1; i < getRows(); i++ )
               if( Math.abs( echelonForm.getEntry( i, pivotColumn ) ) > Math.abs( echelonForm.getEntry( max, pivotColumn ) ) ) max = i;
 
           if( max != pivotRow ){
             echelonForm.switchRows( pivotRow, max );
+            matrix.switchRows( pivotRow, max );
           }
 
           if( echelonForm.getEntry( pivotRow, pivotColumn ) == 0.0 ){
-            reducedRowEchelon( pivotRow, pivotColumn + 1, echelonForm );
+            reducedRowEchelon( pivotRow, pivotColumn + 1, echelonForm, matrix );
           } else {
             double nonzero = 0.0;
 
             nonzero = ( 1.0 / echelonForm.getEntry( pivotRow, pivotColumn ) );
             echelonForm.scale( pivotRow,  nonzero );
+            matrix.scale( pivotRow, nonzero );
 
-            for( int i = pivotRow + 1; i < getRowCount(); i++ ){
+            for( int i = pivotRow + 1; i < getRows(); i++ ){
               if( echelonForm.getEntry( i, pivotColumn ) != 0.0 ){
                 nonzero = echelonForm.getEntry( i, pivotColumn ) * -1.0;
                 echelonForm.replace( i, pivotRow, nonzero );
+                matrix.replace( i, pivotRow, nonzero );
               }
             }
 
@@ -203,10 +211,11 @@ public class Matrix{
               if( echelonForm.getEntry( j, pivotColumn ) != 0.0 ){
                 nonzero = echelonForm.getEntry( j, pivotColumn ) * -1.0;
                 echelonForm.replace( j, pivotRow, nonzero );
+                matrix.replace( j, pivotRow, nonzero );
               }
             }
 
-            reducedRowEchelon( pivotRow + 1, pivotColumn + 1, echelonForm );
+            reducedRowEchelon( pivotRow + 1, pivotColumn + 1, echelonForm, matrix );
           }
       }
 

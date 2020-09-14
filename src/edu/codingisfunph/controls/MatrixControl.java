@@ -76,7 +76,7 @@ public class MatrixControl extends VBox{
       private ChoiceBox createActionChoices(){
           ChoiceBox actionChoices = new ChoiceBox();
           actions = actionChoices.getItems();
-          actions.addAll( CHOOSE, NEW_MATRIX, GENERATE_ENTRIES, NEGATIVE_MATRIX, TRANSPOSE_MATRIX, REDUCED_ROW_ECHELON );
+          actions.addAll( CHOOSE, NEW_MATRIX, AUGMENTED_MATRIX, GENERATE_ENTRIES, NEGATIVE_MATRIX, TRANSPOSE_MATRIX, REDUCED_ROW_ECHELON );
           actionChoices.setValue( CHOOSE );
           actionChoices.valueProperty().addListener( e -> {
             ObservableValue<String> selectedAction = actionChoices.valueProperty();
@@ -90,8 +90,8 @@ public class MatrixControl extends VBox{
 
       private Dialog< MatrixDimension > createtMatrixDimensionDialog(){
           Dialog< MatrixDimension > dialog = new Dialog< MatrixDimension >();
-          dialog.setTitle( "Matrix Size" );
-          dialog.setHeaderText( "Please enter the size of the matrix." );
+          dialog.setTitle( "New Matrix" );
+          dialog.setHeaderText( "Please enter the size of the new matrix." );
           dialog.setResizable( false );
 
           Label rowSizeLabel = new Label( "Row Size:" );
@@ -141,6 +141,8 @@ public class MatrixControl extends VBox{
                  matrix = new Matrix( dimension.getRowCount(), dimension.getColumnCount() );
                  setMatrix( matrix );
               }
+          } else if( action.equals( AUGMENTED_MATRIX ) ){
+
           } else if( action.equals( GENERATE_ENTRIES ) ){
               matrix.generateRandomEntries();
           } else if( action.equals( NEGATIVE_MATRIX ) ){
@@ -153,12 +155,13 @@ public class MatrixControl extends VBox{
                   setMatrix( transposed );
               }
           } else if( action.equals( REDUCED_ROW_ECHELON ) ){
-             matrix.copyEntries( matrix.reducedRowEchelon() );
+             matrix.copyEntries( matrix.reducedRowEchelon( constantMatrix ) );
           }
       }
 
 
       private Matrix matrix;
+      private Matrix constantMatrix;
       public static final int DEFAULT_ELEMENT_SIZE = 55;
       private static final int DEFAULT_GAP = 2;
       private Dialog< MatrixDimension > matrixDimensionDialog;
@@ -172,4 +175,5 @@ public class MatrixControl extends VBox{
       private final static String NEGATIVE_MATRIX = "Negative Matrix";
       private final static String TRANSPOSE_MATRIX = "Transpose Matrix";
       private final static String REDUCED_ROW_ECHELON = "Reduced Row-Echelon";
+      private final static String AUGMENTED_MATRIX = "Create Augmented Matrix";
 }
