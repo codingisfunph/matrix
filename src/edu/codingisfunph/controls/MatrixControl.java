@@ -25,7 +25,7 @@ public class MatrixControl extends VBox{
           matrixGridPane.setVgap( DEFAULT_GAP );
           constantMatrixGridPane.setHgap( DEFAULT_GAP );
           constantMatrixGridPane.setVgap( DEFAULT_GAP );
-          matrixDimensionDialog = createtMatrixDimensionDialog();
+          matrixDimensionDialog = new MatrixDimensionDialog();
           actionChoices = createActionChoices();
 
           hbox.getChildren().addAll( matrixGridPane, constantMatrixGridPane );
@@ -74,19 +74,6 @@ public class MatrixControl extends VBox{
         }
       }
 
-      private class MatrixDimension{
-            public MatrixDimension( int rows, int columns ){
-               this.rows = rows;
-               this.columns = columns;
-            }
-
-            public int getRowCount(){ return rows; }
-            public int getColumnCount(){ return columns; }
-
-            private int rows;
-            private int columns;
-      }
-
       private ChoiceBox createActionChoices(){
           ChoiceBox actionChoices = new ChoiceBox();
           actionChoices.getItems().add(  CHOOSE );
@@ -101,50 +88,6 @@ public class MatrixControl extends VBox{
           });
 
           return actionChoices;
-      }
-
-      private Dialog< MatrixDimension > createtMatrixDimensionDialog(){
-          Dialog< MatrixDimension > dialog = new Dialog< MatrixDimension >();
-          dialog.setTitle( "New Matrix" );
-          dialog.setHeaderText( "Please enter the size of the new matrix." );
-          dialog.setResizable( false );
-
-          Label rowSizeLabel = new Label( "Row Size:" );
-          Label columnSizeLabel = new Label( "Column Size:" );
-          Spinner< Integer > rowSizeSpinner = new Spinner< Integer >();
-          Spinner< Integer > columnSizeSpinner = new Spinner< Integer >();
-
-          SpinnerValueFactory<Integer> rowSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 6, 1 );
-          SpinnerValueFactory<Integer> columnSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 6, 1 );
-
-          rowSizeSpinner.setValueFactory( rowSizeValueFactory );
-          columnSizeSpinner.setValueFactory( columnSizeValueFactory );
-
-          GridPane grid = new GridPane();
-          grid.setHgap( 10 );
-          grid.setVgap( 10 );
-          grid.add( rowSizeLabel, 1, 1 );
-          grid.add( rowSizeSpinner, 2, 1 );
-          grid.add( columnSizeLabel, 1, 2 );
-          grid.add( columnSizeSpinner, 2, 2 );
-
-          dialog.getDialogPane().setContent( grid );
-
-          ButtonType createButton = new ButtonType( "Create", ButtonData.OK_DONE );
-          dialog.getDialogPane().getButtonTypes().add( createButton );
-
-          dialog.setResultConverter( new Callback< ButtonType, MatrixDimension>(){
-              public MatrixDimension call( ButtonType b ){
-                  if( b ==  createButton ){
-                        int rows = rowSizeSpinner.getValue();
-                        int columns = columnSizeSpinner.getValue();
-                        return new MatrixDimension( rows, columns );
-                  }
-                  return null;
-              }
-          });
-
-          return dialog;
       }
 
       private void doAction( String action ){
@@ -224,7 +167,7 @@ public class MatrixControl extends VBox{
       private Matrix constantMatrix = new Matrix( 0, 0 );
       public static final int DEFAULT_ELEMENT_SIZE = 60;
       private static final int DEFAULT_GAP = 2;
-      private Dialog< MatrixDimension > matrixDimensionDialog;
+      private MatrixDimensionDialog matrixDimensionDialog;
       private ChoiceBox actionChoices;
       private ObservableList<String> actions;
       private GridPane matrixGridPane = new GridPane();
