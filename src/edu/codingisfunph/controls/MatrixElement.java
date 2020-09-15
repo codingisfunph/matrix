@@ -27,12 +27,12 @@ public class MatrixElement extends TextField implements ChangeListener< String >
             try{
                 matrix.setEntry( row, column, Double.parseDouble( newValue) );
             }catch( NumberFormatException ex ){
-                textProperty().set( Double.toString( matrix.getEntry( row, column ) ) );
+                textProperty().set( String.format( "%4.2f", matrix.getEntry( row, column ) ) );
             }
        }
 
        public void entryChanged( EntryChangeEvent e ){
-            textProperty().set( Double.toString( matrix.getEntry( row, column ) ) );
+            textProperty().set( String.format( "%4.2f", matrix.getEntry( row, column ) ) );
        }
 
        public int getRow(){ return row; }
