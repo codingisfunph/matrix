@@ -25,7 +25,7 @@ public class Matrix{
         double oldValue = entries[ row ][ column ];
         entries[ row ][ column ] = value;
         EntryChangeEvent event = new EntryChangeEvent( row, column, oldValue, value, this );
-        fireEntryChangeEvent( event );
+        if( oldValue != value ) fireEntryChangeEvent( event );
       }
 
       public void addEntryChangeListener( EntryChangeListener listener ){ entriesChangeListeners.add( listener ); }

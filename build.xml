@@ -15,6 +15,8 @@
     <target name="compile">
         <mkdir dir="build/classes"/>
         <javac includeantruntime="false" srcdir="src" destdir="build/classes">
+            <compilerarg value="-Xlint:unchecked"/>
+            <compilerarg value="-Xlint:deprecation"/>
             <classpath refid="build.classpath"/>
         </javac>
     </target>
@@ -27,7 +29,6 @@
             </manifest>
         </jar>
     </target>
-
 
     <target name="run">
         <java classname="edu.codingisfunph.controls.MatrixDriverProgram">

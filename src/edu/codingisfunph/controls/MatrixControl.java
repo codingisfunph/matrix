@@ -26,6 +26,9 @@ public class MatrixControl extends VBox{
           constantMatrixGridPane.setHgap( DEFAULT_GAP );
           constantMatrixGridPane.setVgap( DEFAULT_GAP );
           matrixDimensionDialog = new MatrixDimensionDialog();
+          scaleRowDialog = new ScaleRowDialog();
+          replaceRowDialog = new ReplaceRowDialog();
+          switchRowsDialog = new SwitchRowsDialog();
           actionChoices = createActionChoices();
 
           hbox.getChildren().addAll( matrixGridPane, constantMatrixGridPane );
@@ -74,8 +77,8 @@ public class MatrixControl extends VBox{
         }
       }
 
-      private ChoiceBox createActionChoices(){
-          ChoiceBox actionChoices = new ChoiceBox();
+      private ChoiceBox< String > createActionChoices(){
+          ChoiceBox< String > actionChoices = new ChoiceBox< String >();
           actionChoices.getItems().add(  CHOOSE );
           showMatrixDefinitionOperations( actionChoices );
           showMatrixUnaryOperations( actionChoices );
@@ -137,26 +140,50 @@ public class MatrixControl extends VBox{
                   setMatrix( transposed );
               }
           } else if( action.equals( AugmentedMatrixOperations.REDUCED_ROW_ECHELON.getOperation() ) ){
-             matrix.copyEntries( matrix.reducedRowEchelon( constantMatrix ) );
+              matrix.copyEntries( matrix.reducedRowEchelon( constantMatrix ) );
+          } else if( action.equals( AugmentedMatrixOperations.SCALE_ROW.getOperation() ) ){
+              scaleRowDialog.setRowCount( matrix.getRowCount() );
+              Optional< ScaleRow > result = scaleRowDialog.showAndWait();
+              if( result.isPresent() ){
+                  ScaleRow scaleRow = result.get();
+                  matrix.scale( scaleRow.getRow(), scaleRow.getNonzero() );
+                  constantMatrix.scale( scaleRow.getRow(), scaleRow.getNonzero() );
+              }
+          } else if( action.equals( AugmentedMatrixOperations.REPLACE_ROW.getOperation() ) ){
+              replaceRowDialog.setRowCount( matrix.getRowCount() );
+              Optional< ReplaceRow > result = replaceRowDialog.showAndWait();
+              if( result.isPresent() ){
+                  ReplaceRow replaceRow = result.get();
+                  matrix.replace( replaceRow.getRow1(), replaceRow.getRow2(), replaceRow.getNonzero() );
+                  constantMatrix.replace( replaceRow.getRow1(), replaceRow.getRow2(), replaceRow.getNonzero() );
+              }
+          }  else if( action.equals( AugmentedMatrixOperations.SWITCH_ROWS.getOperation() ) ){
+              switchRowsDialog.setRowCount( matrix.getRowCount() );
+              Optional< SwitchRows > result = switchRowsDialog.showAndWait();
+              if( result.isPresent() ){
+                  SwitchRows switchRows = result.get();
+                  matrix.switchRows( switchRows.getRow1(), switchRows.getRow2() );
+                  constantMatrix.switchRows( switchRows.getRow1(), switchRows.getRow2() );
+              }
           }
       }
 
 
-      private void showAugmentedMatrixOperations( ChoiceBox actionChoices ){
+      private void showAugmentedMatrixOperations( ChoiceBox< String > actionChoices ){
           actions = actionChoices.getItems();
 
           for( AugmentedMatrixOperations operations : AugmentedMatrixOperations.values() )
             actions.add( operations.getOperation() );
       }
 
-      private void showMatrixUnaryOperations( ChoiceBox actionChoices ){
+      private void showMatrixUnaryOperations( ChoiceBox< String > actionChoices ){
           actions = actionChoices.getItems();
 
           for( MatrixUnaryOperations operations : MatrixUnaryOperations.values() )
             actions.add( operations.getOperation() );
       }
 
-      private void showMatrixDefinitionOperations( ChoiceBox actionChoices ){
+      private void showMatrixDefinitionOperations( ChoiceBox< String > actionChoices ){
           actions = actionChoices.getItems();
 
           for( MatrixDefinitionOperations operations : MatrixDefinitionOperations.values() )
@@ -167,11 +194,15 @@ public class MatrixControl extends VBox{
       private Matrix constantMatrix = new Matrix( 0, 0 );
       public static final int DEFAULT_ELEMENT_SIZE = 60;
       private static final int DEFAULT_GAP = 2;
-      private MatrixDimensionDialog matrixDimensionDialog;
-      private ChoiceBox actionChoices;
-      private ObservableList<String> actions;
+      private ChoiceBox< String > actionChoices;
+      private ObservableList< String > actions;
       private GridPane matrixGridPane = new GridPane();
       private GridPane constantMatrixGridPane = new GridPane();
       private HBox hbox = new HBox( 8 );
       private final static String CHOOSE = "Choose";
+      // Dialogs
+      private MatrixDimensionDialog matrixDimensionDialog;
+      private ScaleRowDialog scaleRowDialog;
+      private ReplaceRowDialog replaceRowDialog;
+      private SwitchRowsDialog switchRowsDialog;
 }
