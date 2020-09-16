@@ -18,15 +18,15 @@ public class MatrixElement extends TextField implements ChangeListener< String >
                                                         EntryChangeListener {
 
        public MatrixElement( int row, int column, Matrix matrix ){
-           super( String.format( "%2.2f", matrix.getEntry( row, column ) ) );
-           setPrefSize( DEFAULT_ELEMENT_SIZE, DEFAULT_ELEMENT_SIZE );
-           setAlignment( Pos.CENTER );
+           setTextFormatter( textFormatter );
            textProperty().addListener( this );
            this.row = row;
            this.column = column;
            this.matrix = matrix;
            this.matrix.addEntryChangeListener( row, column, this );
-           setTextFormatter( textFormatter );
+           setText( String.format( "%2.2f", matrix.getEntry( row, column ) ) );
+           setPrefSize( DEFAULT_ELEMENT_SIZE, DEFAULT_ELEMENT_SIZE );
+           setAlignment( Pos.CENTER );
        }
 
        public void changed( ObservableValue observable, String oldValue, String newValue ){
@@ -70,7 +70,7 @@ public class MatrixElement extends TextField implements ChangeListener< String >
 
            @Override
            public Double fromString( String s ) {
-               if (s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
+               if ( s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
                    return 0.0 ;
                } else {
                    return Double.valueOf( s );

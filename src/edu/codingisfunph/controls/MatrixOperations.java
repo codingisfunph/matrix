@@ -2,9 +2,10 @@ package edu.codingisfunph.controls;
 
 public enum MatrixOperations{
 
+        CHOOSE_OPERATION( "Choose" ),
         NEW_MATRIX( "New Matrix" ),
         GENERATE_ENTRIES( "Generate Entries" ),
-        TRANSPOSE_MATRIX( "Tranpose Matrix" ),
+        TRANSPOSE_MATRIX( "Transpose Matrix" ),
         NEGATIVE_MATRIX( "Negative Matrix" ),
         SCALE_ROW( "Scale Row" ),
         REPLACE_ROW( "Replace Row" ),
@@ -18,6 +19,6 @@ public enum MatrixOperations{
 
         public String getOperation(){ return operation; }
         public String toString(){ return operation; }
-        
+
         private final String operation;
 }

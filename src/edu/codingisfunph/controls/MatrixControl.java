@@ -65,16 +65,14 @@ public class MatrixControl extends VBox{
         }
       }
 
-      private ChoiceBox< String > createActionChoices(){
-          ChoiceBox< String > actionChoices = new ChoiceBox< String >();
-          actionChoices.getItems().add(  CHOOSE );
+      private ChoiceBox< MatrixOperations > createActionChoices(){
+          ChoiceBox< MatrixOperations > actionChoices = new ChoiceBox< MatrixOperations >();
           buildActionChoices( actionChoices );
-          actionChoices.setValue( CHOOSE );
           actionChoices.valueProperty().addListener( e -> {
-            ObservableValue<String> selectedAction = actionChoices.valueProperty();
-            String selectedValue = selectedAction.getValue();
+            ObservableValue< MatrixOperations > selectedAction = actionChoices.valueProperty();
+            MatrixOperations selectedValue = selectedAction.getValue();
             doAction( selectedValue );
-            actionChoices.setValue(CHOOSE);
+            actionChoices.setValue( MatrixOperations.CHOOSE_OPERATION );
           });
 
           return actionChoices;
@@ -85,7 +83,10 @@ public class MatrixControl extends VBox{
       }
 
       public void transposeMatrix(){
-          matrix.copyEntries( matrix.transpose() );
+          if( matrix.isSquare() )
+            matrix.copyEntries( matrix.transpose() );
+          else
+            setMatrix( matrix.transpose() );
       }
 
       public void negativeMatrix(){
@@ -96,30 +97,43 @@ public class MatrixControl extends VBox{
           matrix.scale( row, nonzero );
       }
 
-      private void doAction( String action ){
+      public void reducedRowEchelonForm(){
+          matrix.copyEntries( matrix.reducedRowEchelonForm() );
+      }
+
+      public void rowEchelonForm(){
+          matrix.copyEntries( matrix.rowEchelonForm() );
+      }
+
+
+      private void doAction( MatrixOperations action ){
           MatrixControlOperation controlOperation = controlOperations.get( action );
           if( controlOperation != null ) controlOperation.performOperation();
       }
 
       private void buildMatrixControlOperations(){
-          controlOperations.put( MatrixOperations.NEW_MATRIX.toString(), new CreateNewMatrix( this ) );
-          controlOperations.put( MatrixOperations.GENERATE_ENTRIES.toString(), new GenerateMatrixEntries( this ) );
-          controlOperations.put( MatrixOperations.TRANSPOSE_MATRIX.toString(), new TransposeMatrix( this ) );
-          controlOperations.put( MatrixOperations.NEGATIVE_MATRIX.toString(), new NegativeMatrix( this ) );
+          controlOperations.put( MatrixOperations.NEW_MATRIX, new CreateNewMatrix( this ) );
+          controlOperations.put( MatrixOperations.GENERATE_ENTRIES, new GenerateMatrixEntries( this ) );
+          controlOperations.put( MatrixOperations.TRANSPOSE_MATRIX, new TransposeMatrix( this ) );
+          controlOperations.put( MatrixOperations.NEGATIVE_MATRIX, new NegativeMatrix( this ) );
+          controlOperations.put( MatrixOperations.ROW_ECHELON, new RowEchelon( this ) );
+          controlOperations.put( MatrixOperations.REDUCED_ROW_ECHELON, new ReducedRowEchelon( this ) );
       }
 
-      private void buildActionChoices( ChoiceBox< String > actionChoices ){
+      private void buildActionChoices( ChoiceBox< MatrixOperations > actionChoices ){
           actions = actionChoices.getItems();
 
           for( MatrixOperations operation : MatrixOperations.values() )
-            actions.add( operation.toString() );
+            actions.add( operation );
+
+          actionChoices.setValue( MatrixOperations.CHOOSE_OPERATION );
       }
 
       private Matrix matrix;
       public static final int DEFAULT_ELEMENT_SIZE = 60;
       private static final int DEFAULT_GAP = 2;
-      private ChoiceBox< String > actionChoices;
-      private ObservableList< String > actions;
+      private ChoiceBox< MatrixOperations > actionChoices;
+      private ObservableList< MatrixOperations > actions;
       private GridPane matrixGridPane = new GridPane();
       private HBox hbox = new HBox( 8 );
       private final static String CHOOSE = "Choose";
@@ -128,5 +142,5 @@ public class MatrixControl extends VBox{
       private ScaleRowDialog scaleRowDialog;
       private ReplaceRowDialog replaceRowDialog;
       private SwitchRowsDialog switchRowsDialog;
-      private Map< String, MatrixControlOperation > controlOperations = new HashMap< String, MatrixControlOperation >();
+      private Map< MatrixOperations, MatrixControlOperation > controlOperations = new HashMap< MatrixOperations, MatrixControlOperation >();
 }
