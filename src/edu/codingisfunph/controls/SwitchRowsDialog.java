@@ -16,7 +16,7 @@ public class SwitchRowsDialog extends Dialog< SwitchRows >{
       public SwitchRowsDialog(){
           super();
           setTitle( "Switch Rows" );
-          setHeaderText( "Please enter the rows switch." );
+          setHeaderText( "Please enter the rows to switch." );
           setResizable( false );
           addComponents();
        }
@@ -55,8 +55,8 @@ public class SwitchRowsDialog extends Dialog< SwitchRows >{
        }
 
        private ButtonType okButton = new ButtonType( "OK", ButtonData.OK_DONE );
-       private Label row1IndexLabel = new Label( "Replace Row:" );
-       private Label row2IndexLabel = new Label( "Replace By:" );
+       private Label row1IndexLabel = new Label( "Row a:" );
+       private Label row2IndexLabel = new Label( "Row b:" );
        private ComboBox< Integer > row1IndexComboBox = new ComboBox< Integer >();
        private ComboBox< Integer > row2IndexComboBox = new ComboBox< Integer >();
 }

@@ -30,7 +30,7 @@ public class MatrixElement extends TextField implements ChangeListener< String >
        }
 
        public void changed( ObservableValue observable, String oldValue, String newValue ){
-            matrix.setEntry( row, column, Double.parseDouble( newValue) );
+            matrix.setEntry( row, column, converter.fromString( newValue ) );
        }
 
        public void entryChanged( EntryChangeEvent e ){
@@ -66,22 +66,21 @@ public class MatrixElement extends TextField implements ChangeListener< String >
        private DoubleStringConverter converter = new DoubleStringConverter();
        private TextFormatter< Double > textFormatter = new TextFormatter< Double >( converter, 0.0, filter );
 
-}
+       class DoubleStringConverter extends StringConverter< Double >{
 
-class DoubleStringConverter extends StringConverter< Double >{
+           @Override
+           public Double fromString( String s ) {
+               if (s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
+                   return 0.0 ;
+               } else {
+                   return Double.valueOf( s );
+               }
+           }
 
-    @Override
-    public Double fromString( String s ) {
-        if (s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
-            return 0.0 ;
-        } else {
-            return Double.valueOf( s );
-        }
-    }
+           @Override
+           public String toString( Double d ) {
+               return d.toString();
+           }
 
-    @Override
-    public String toString( Double d ) {
-        return d.toString();
-    }
-
+       }
 }

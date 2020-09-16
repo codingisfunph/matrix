@@ -2,7 +2,7 @@ package edu.codingisfunph.controls;
 
 public class SwitchRows{
 
-      public SwitchRows( int row1, int getRow2){
+      public SwitchRows( int row1, int row2){
           this.row1 = row1;
           this.row2 = row2;
       }

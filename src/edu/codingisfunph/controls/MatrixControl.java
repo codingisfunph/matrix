@@ -161,7 +161,7 @@ public class MatrixControl extends VBox{
               switchRowsDialog.setRowCount( matrix.getRowCount() );
               Optional< SwitchRows > result = switchRowsDialog.showAndWait();
               if( result.isPresent() ){
-                  SwitchRows switchRows = result.get();
+                  SwitchRows switchRows = result.get();                  
                   matrix.switchRows( switchRows.getRow1(), switchRows.getRow2() );
                   constantMatrix.switchRows( switchRows.getRow1(), switchRows.getRow2() );
               }

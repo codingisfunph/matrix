@@ -56,7 +56,7 @@ class IntegerStringConverter extends StringConverter< Integer >{
 
     @Override
     public Integer fromString( String s ) {
-        if (s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
+        if ( s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
             return 0 ;
         } else {
             return Integer.valueOf( s );
@@ -69,12 +69,11 @@ class IntegerStringConverter extends StringConverter< Integer >{
     }
 }
 
-
 class DoubleStringConverter extends StringConverter< Double >{
 
     @Override
     public Double fromString( String s ) {
-        if (s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
+        if ( s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
             return 0.0 ;
         } else {
             return Double.valueOf( s );
