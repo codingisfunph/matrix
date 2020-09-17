@@ -1,11 +1,13 @@
-package edu.codingisfunph.controls;
+package edu.codingisfunph.controls.operation;
+
 
 import java.util.Optional;
 import edu.codingisfunph.math.matrix.Matrix;
+import edu.codingisfunph.controls.*;
 
-public class ReducedRowEchelon implements MatrixControlOperation{
+public class ReducedRowEchelonOperation implements MatrixControlOperation{
 
-      public ReducedRowEchelon( MatrixControl matrixControl ){
+      public ReducedRowEchelonOperation( MatrixControl matrixControl ){
           this.matrixControl = matrixControl;
       }
 

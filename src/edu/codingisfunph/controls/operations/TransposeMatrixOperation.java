@@ -1,11 +1,13 @@
-package edu.codingisfunph.controls;
+package edu.codingisfunph.controls.operation;
+
 
 import java.util.Optional;
 import edu.codingisfunph.math.matrix.Matrix;
+import edu.codingisfunph.controls.*;
 
-public class TransposeMatrix implements MatrixControlOperation{
+public class TransposeMatrixOperation implements MatrixControlOperation{
 
-      public TransposeMatrix( MatrixControl matrixControl ){
+      public TransposeMatrixOperation( MatrixControl matrixControl ){
           this.matrixControl = matrixControl;
       }
 

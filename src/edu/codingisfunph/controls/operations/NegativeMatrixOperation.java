@@ -1,11 +1,13 @@
-package edu.codingisfunph.controls;
+package edu.codingisfunph.controls.operation;
+
 
 import java.util.Optional;
 import edu.codingisfunph.math.matrix.Matrix;
+import edu.codingisfunph.controls.*;
 
-public class NegativeMatrix implements MatrixControlOperation{
+public class NegativeMatrixOperation implements MatrixControlOperation{
 
-      public NegativeMatrix( MatrixControl matrixControl ){
+      public NegativeMatrixOperation( MatrixControl matrixControl ){
           this.matrixControl = matrixControl;
       }
 

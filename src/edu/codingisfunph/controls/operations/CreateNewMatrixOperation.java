@@ -1,11 +1,12 @@
-package edu.codingisfunph.controls;
+package edu.codingisfunph.controls.operation;
 
 import java.util.Optional;
 import edu.codingisfunph.math.matrix.Matrix;
+import edu.codingisfunph.controls.*;
 
-public class CreateNewMatrix implements MatrixControlOperation{
+public class CreateNewMatrixOperation implements MatrixControlOperation{
 
-      public CreateNewMatrix( MatrixControl matrixControl ){
+      public CreateNewMatrixOperation( MatrixControl matrixControl ){
           this.matrixControl = matrixControl;
           matrixDimensionDialog.setTitle( "New Matrix" );
           matrixDimensionDialog.setHeaderText( "Please enter the size of the new matrix." );

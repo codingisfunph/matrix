@@ -1,5 +1,6 @@
 package edu.codingisfunph.controls;
 
+import edu.codingisfunph.controls.operation.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
@@ -97,6 +98,14 @@ public class MatrixControl extends VBox{
           matrix.scale( row, nonzero );
       }
 
+      public void replaceMatrixRow( int row1, int row2, double nonzero ){
+          matrix.replace( row1, row2, nonzero );
+      }
+
+      public void switchMatrixRows( int row1, int row2 ){
+          matrix.switchRows( row1, row2 );
+      }
+
       public void reducedRowEchelonForm(){
           matrix.copyEntries( matrix.reducedRowEchelonForm() );
       }
@@ -109,6 +118,18 @@ public class MatrixControl extends VBox{
           matrix.copyEntries( matrix.power( value ) );
       }
 
+      public boolean isMatrixSquare(){
+          return matrix.isSquare();
+      }
+
+      public int getMatrixColumnCount(){
+          return matrix.getColumnCount();
+      }
+
+      public int getMatrixRowCount(){
+          return matrix.getRowCount();
+      }
+
 
       private void doAction( MatrixOperations action ){
           MatrixControlOperation controlOperation = controlOperations.get( action );
@@ -116,13 +137,16 @@ public class MatrixControl extends VBox{
       }
 
       private void buildMatrixControlOperations(){
-          controlOperations.put( MatrixOperations.NEW_MATRIX, new CreateNewMatrix( this ) );
-          controlOperations.put( MatrixOperations.GENERATE_ENTRIES, new GenerateMatrixEntries( this ) );
-          controlOperations.put( MatrixOperations.TRANSPOSE_MATRIX, new TransposeMatrix( this ) );
-          controlOperations.put( MatrixOperations.NEGATIVE_MATRIX, new NegativeMatrix( this ) );
-          controlOperations.put( MatrixOperations.ROW_ECHELON, new RowEchelon( this ) );
-          controlOperations.put( MatrixOperations.REDUCED_ROW_ECHELON, new ReducedRowEchelon( this ) );
-          controlOperations.put( MatrixOperations.MATRIX_POWER, new MatrixPower( this ) );
+          controlOperations.put( MatrixOperations.NEW_MATRIX, new CreateNewMatrixOperation( this ) );
+          controlOperations.put( MatrixOperations.GENERATE_ENTRIES, new GenerateMatrixEntriesOperation( this ) );
+          controlOperations.put( MatrixOperations.TRANSPOSE_MATRIX, new TransposeMatrixOperation( this ) );
+          controlOperations.put( MatrixOperations.NEGATIVE_MATRIX, new NegativeMatrixOperation( this ) );
+          controlOperations.put( MatrixOperations.SCALE_ROW, new ScaleRowOperation( this ) );
+          controlOperations.put( MatrixOperations.REPLACE_ROW, new ReplaceRowOperation( this ) );
+          controlOperations.put( MatrixOperations.SWITCH_ROWS, new SwitchRowsOperation( this ) );
+          controlOperations.put( MatrixOperations.ROW_ECHELON, new RowEchelonOperation( this ) );
+          controlOperations.put( MatrixOperations.REDUCED_ROW_ECHELON, new ReducedRowEchelonOperation( this ) );
+          controlOperations.put( MatrixOperations.MATRIX_POWER, new MatrixPowerOperation( this ) );
       }
 
       private void buildActionChoices( ChoiceBox< MatrixOperations > actionChoices ){
