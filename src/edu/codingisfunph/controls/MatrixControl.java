@@ -105,6 +105,10 @@ public class MatrixControl extends VBox{
           matrix.copyEntries( matrix.rowEchelonForm() );
       }
 
+      public void matrixPower( int value ){
+          matrix.copyEntries( matrix.power( value ) );
+      }
+
 
       private void doAction( MatrixOperations action ){
           MatrixControlOperation controlOperation = controlOperations.get( action );

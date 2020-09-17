@@ -7,6 +7,7 @@ public enum MatrixOperations{
         GENERATE_ENTRIES( "Generate Entries" ),
         TRANSPOSE_MATRIX( "Transpose Matrix" ),
         NEGATIVE_MATRIX( "Negative Matrix" ),
+        MATRIX_POWER( "Matrix Power" ),
         SCALE_ROW( "Scale Row" ),
         REPLACE_ROW( "Replace Row" ),
         SWITCH_ROWS( "Switch Rows "),

@@ -32,7 +32,7 @@ public class MatrixPowerDialog extends Dialog< Integer >{
           setResultConverter( new Callback< ButtonType, Integer >(){
               public Integer call( ButtonType b ){
                     if( b ==  okButton ){
-                        return integerTextField.getText();
+                        return Integer.parseInt( integerTextField.getText() );
                     }
                   return null;
               }
