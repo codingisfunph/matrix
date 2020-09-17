@@ -122,6 +122,7 @@ public class MatrixControl extends VBox{
           controlOperations.put( MatrixOperations.NEGATIVE_MATRIX, new NegativeMatrix( this ) );
           controlOperations.put( MatrixOperations.ROW_ECHELON, new RowEchelon( this ) );
           controlOperations.put( MatrixOperations.REDUCED_ROW_ECHELON, new ReducedRowEchelon( this ) );
+          controlOperations.put( MatrixOperations.MATRIX_POWER, new MatrixPower( this ) );
       }
 
       private void buildActionChoices( ChoiceBox< MatrixOperations > actionChoices ){

@@ -48,7 +48,7 @@ public class NumericTextField{
       }
 
       private static final String doubleStringPattern = "-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?";
-      private static final String integerStringPattern = "[^\\d]";
+      private static final String integerStringPattern = "^\\d+";
 }
 
 
@@ -56,7 +56,7 @@ class IntegerStringConverter extends StringConverter< Integer >{
 
     @Override
     public Integer fromString( String s ) {
-        if ( s.isEmpty() || "-".equals( s ) || ".".equals( s ) || "-.".equals( s ) ) {
+        if ( s.isEmpty() || "-".equals( s ) ) {
             return 0 ;
         } else {
             return Integer.valueOf( s );
