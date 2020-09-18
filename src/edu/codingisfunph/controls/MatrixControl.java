@@ -19,6 +19,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.geometry.Pos;
 import java.util.Map;
 import java.util.HashMap;
+import edu.codingisfunph.math.matrix.algorithms.GaussianElimination;
 
 public class MatrixControl extends VBox{
 
@@ -111,7 +112,7 @@ public class MatrixControl extends VBox{
       }
 
       public void rowEchelonForm(){
-          matrix.copyEntries( matrix.rowEchelonForm() );
+          matrix.copyEntries( GaussianElimination.rowEchelon( matrix ) );
       }
 
       public void matrixPower( int value ){

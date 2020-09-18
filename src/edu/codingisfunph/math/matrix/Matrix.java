@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import edu.codingisfunph.math.matrix.algorithms.GaussianElimination;
 
 public class Matrix{
 
