@@ -1,4 +1,4 @@
-package edu.codingisfunph.controls;
+package edu.codingisfunph.controls.dialogs;
 
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Spinner;
@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import java.util.Optional;
+import edu.codingisfunph.controls.*;
 
 public class ReplaceRowDialog extends Dialog< ReplaceRow >{
 

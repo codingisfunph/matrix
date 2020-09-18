@@ -1,4 +1,4 @@
-package edu.codingisfunph.controls;
+package edu.codingisfunph.controls.dialogs;
 
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Spinner;
@@ -12,6 +12,9 @@ import javafx.util.Callback;
 import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import edu.codingisfunph.controls.NumericTextField.IntegerTextField;
+import edu.codingisfunph.controls.*;
+
 
 public class MatrixDimensionDialog extends Dialog< MatrixDimension > implements ChangeListener< Integer >{
 
