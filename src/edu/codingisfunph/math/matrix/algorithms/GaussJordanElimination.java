@@ -22,8 +22,7 @@ public class GaussJordanElimination{
               reducedRowEchelon( pivotRow, ++pivotColumn, matrix );
           } else {
 
-
-              if( Math.abs( matrix.getEntry( pivotRow, pivotColumn ) ) > 1.0 ){
+              if( Math.abs( matrix.getEntry( pivotRow, pivotColumn ) ) != 1.0 ){
                 double pivot = matrix.getEntry( pivotRow, pivotColumn );
                 matrix.scale( pivotRow, ( 1.0 / pivot ) );
               }

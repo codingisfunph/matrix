@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.Scanner;
 import edu.codingisfunph.math.matrix.algorithms.GaussianElimination;
 import edu.codingisfunph.math.matrix.algorithms.GaussJordanElimination;
+import edu.codingisfunph.math.matrix.algorithms.MatrixProduct;
+import edu.codingisfunph.math.matrix.algorithms.ElementaryOperation;
 
 
 public class Matrix{
@@ -83,19 +85,11 @@ public class Matrix{
       }
 
       public void scale( int row, double nonzero ) throws ZeroValueException {
-          if( nonzero != 0.0 )
-            for( int j = 0; j < getColumnCount(); j++ )
-              setEntry( row, j, entries[ row ][ j ] * nonzero );
-          else
-            throw new ZeroValueException();
+          ElementaryOperation.scale( this, row, nonzero );
       }
 
       public void replace( int row2, int row1, double nonzero ) throws ZeroValueException {
-        if( nonzero != 0.0 )
-          for( int j = 0; j < getColumnCount(); j++ )
-            setEntry( row2, j, entries[ row2 ][ j ] + entries[ row1 ][ j ] * nonzero );
-        else
-          throw new ZeroValueException();
+          ElementaryOperation.replace( this, row2, row1, nonzero );
       }
 
       /**
@@ -104,67 +98,23 @@ public class Matrix{
       * @param row2 index of the second row to switch with row1
       */
       public void switchRows( int row1, int row2 ) throws IndexOutOfBoundsException{
-        double temp;
-        for( int j = 0; j < getColumnCount(); j++ ){
-           temp = getEntry( row1, j );
-           setEntry( row1, j, getEntry( row2, j ) );
-           setEntry( row2, j, temp );
-        }
+          ElementaryOperation.switchRows( this, row1, row2 );
       }
 
       public Matrix power( int r ) throws NonSquareMatrixException {
-          if( isSquare() ){
-            Matrix matrixPower = createIdentityMatrix( getRowCount() );
-
-            for( int s = 0; s < r; s++)
-               matrixPower = matrixPower.multiply( this );
-
-            return matrixPower;
-          } else {
-            throw new NonSquareMatrixException();
-          }
+          return MatrixProduct.power( this, r );
       }
 
       public Matrix multiply( Matrix matrix ) throws MatrixSizeMismatchException{
-          // Matrix-Vector Product: Ax = b
-          // A is an m x n matrix
-          // x is an n-vector
-          // b is an m-vector
-          if( getColumnCount() == matrix.getRowCount() ){
-              Matrix product = new Matrix( getRowCount(), matrix.getColumnCount() );
-              Matrix columnVector;
-              for( int j = 0; j < matrix.getColumnCount(); j++ ){
-                  columnVector = vectorProduct( matrix.getColumnVector( j ) );
-                  product.setColumnVector( j, columnVector );
-              }
-              return product;
-          } else {
-            throw new MatrixSizeMismatchException();
-          }
+          return MatrixProduct.multiply( this, matrix );
       }
 
       private Matrix vectorProduct( Matrix vector ) throws MatrixSizeMismatchException {
-        if( getColumnCount() == vector.getRowCount() && vector.isVector() ){
-          Matrix product = new Matrix( getRowCount(), vector.getColumnCount() );
-          Matrix columnVector;
-          for( int i = 0; i < getColumnCount(); i++ ){
-            columnVector = getColumnVector( i );
-            product = product.add( columnVector.scalarProduct( vector.getEntry( i, 0 ) ) );
-          }
-          return product;
-        } else {
-          throw new MatrixSizeMismatchException();
-        }
+          return MatrixProduct.vectorProduct( this, vector );
       }
 
-      public Matrix scalarProduct( double scalarValue){
-          Matrix product = duplicate();
-
-          for( int i = 0; i < getRowCount(); i++ )
-            for( int j = 0; j < getColumnCount(); j++ )
-              product.setEntry( i, j, entries[ i ][ j ] * scalarValue );
-
-          return product;
+      public Matrix scalarProduct( double scalarValue ){
+          return MatrixProduct.scalarProduct( this, scalarValue );
       }
 
       /**
@@ -204,7 +154,6 @@ public class Matrix{
             throw new MatrixSizeMismatchException();
           }
       }
-
 
       public void generateRandomEntries(){
           LocalTime now = LocalTime.now(); // the value of now.toNanoDay() will be use as a seed for the random generator
@@ -263,18 +212,6 @@ public class Matrix{
           return duplicate;
       }
 
-
-      public Matrix reducedRowEchelon( Matrix matrix ) throws MatrixSizeMismatchException {
-          if( getRowCount() != matrix.getRowCount() ) throw new MatrixSizeMismatchException();
-
-
-          Matrix echelonForm = duplicate();
-
-          GaussJordanElimination.reducedRowEchelon( echelonForm );
-
-          return echelonForm;
-      }
-
       public Matrix reducedRowEchelonForm() {
           return GaussJordanElimination.reducedRowEchelon( this );
       }
@@ -282,125 +219,6 @@ public class Matrix{
       public Matrix rowEchelonForm() {
           return GaussianElimination.rowEchelon( this );
       }
-
-
-      private void rowEchelon( int pivotRow, int pivotColumn, Matrix echelonForm ){
-          if( ( pivotRow < 0 || pivotRow >= getRowCount() ) ||
-              ( pivotColumn < 0 || pivotColumn >= getColumnCount() ) ) return;
-
-          // Find index of max value in column vector starting from pivot row
-          int max = pivotRow;
-          for( int i = pivotRow + 1; i < getRowCount(); i++ )
-              if( Math.abs( echelonForm.getEntry(  i, pivotColumn ) ) > Math.abs( echelonForm.getEntry( max, pivotColumn ) ) ) max = i;
-
-          if( max != pivotRow ){
-            echelonForm.switchRows( pivotRow, max );
-          }
-
-          if( echelonForm.getEntry( pivotRow, pivotColumn ) == 0.0 ){
-            rowEchelon( pivotRow, pivotColumn + 1, echelonForm );
-          } else {
-            double nonzero = 0.0;
-
-            nonzero = ( 1.0 / echelonForm.getEntry( pivotRow, pivotColumn ) );
-            echelonForm.scale( pivotRow,  nonzero );
-
-
-            for( int i = pivotRow + 1; i < getRowCount(); i++ ){
-              if( echelonForm.getEntry( i, pivotColumn ) != 0.0 ){
-                nonzero = echelonForm.getEntry( i, pivotColumn ) * -1.0;
-                echelonForm.replace( i, pivotRow, nonzero );
-              }
-            }
-
-            rowEchelon( pivotRow + 1, pivotColumn + 1, echelonForm );
-          }
-      }
-
-
-
-      private void reducedRowEchelon( int pivotRow, int pivotColumn, Matrix echelonForm ){
-          if( ( pivotRow < 0 || pivotRow >= getRowCount() ) ||
-              ( pivotColumn < 0 || pivotColumn >= getColumnCount() ) ) return;
-
-          // Find index of max value in column vector starting from pivot row
-          int max = pivotRow;
-          for( int i = pivotRow + 1; i < getRowCount(); i++ )
-              if( Math.abs( echelonForm.getEntry( i, pivotColumn ) ) > Math.abs( echelonForm.getEntry( max, pivotColumn ) ) ) max = i;
-
-          if( max != pivotRow ){
-            echelonForm.switchRows( pivotRow, max );
-          }
-
-          if( echelonForm.getEntry( pivotRow, pivotColumn ) == 0.0 ){
-            reducedRowEchelon( pivotRow, pivotColumn + 1, echelonForm );
-          } else {
-            double nonzero = 0.0;
-
-            nonzero = ( 1.0 / echelonForm.getEntry( pivotRow, pivotColumn ) );
-            echelonForm.scale( pivotRow,  nonzero );
-
-            for( int i = pivotRow + 1; i < getRowCount(); i++ ){
-              if( echelonForm.getEntry( i, pivotColumn ) != 0.0 ){
-                nonzero = echelonForm.getEntry( i, pivotColumn ) * -1.0;
-                echelonForm.replace( i, pivotRow, nonzero );
-              }
-            }
-
-            for( int j = pivotRow - 1; j >= 0; j--){
-              if( echelonForm.getEntry( j, pivotColumn ) != 0.0 ){
-                nonzero = echelonForm.getEntry( j, pivotColumn ) * -1.0;
-                echelonForm.replace( j, pivotRow, nonzero );
-              }
-            }
-
-            reducedRowEchelon( pivotRow + 1, pivotColumn + 1, echelonForm );
-          }
-      }
-
-      private void reducedRowEchelon( int pivotRow, int pivotColumn, Matrix echelonForm, Matrix matrix){
-          if( ( pivotRow < 0 || pivotRow >= getRowCount() ) ||
-              ( pivotColumn < 0 || pivotColumn >= getColumnCount() ) ) return;
-
-          // Find index of max value in column vector starting from pivot row
-          int max = pivotRow;
-          for( int i = pivotRow + 1; i < getRowCount(); i++ )
-              if( Math.abs( echelonForm.getEntry( i, pivotColumn ) ) > Math.abs( echelonForm.getEntry( max, pivotColumn ) ) ) max = i;
-
-          if( max != pivotRow ){
-            echelonForm.switchRows( pivotRow, max );
-            matrix.switchRows( pivotRow, max );
-          }
-
-          if( echelonForm.getEntry( pivotRow, pivotColumn ) == 0.0 ){
-            reducedRowEchelon( pivotRow, pivotColumn + 1, echelonForm, matrix );
-          } else {
-            double nonzero = 0.0;
-
-            nonzero = ( 1.0 / echelonForm.getEntry( pivotRow, pivotColumn ) );
-            echelonForm.scale( pivotRow,  nonzero );
-            matrix.scale( pivotRow, nonzero );
-
-            for( int i = pivotRow + 1; i < getRowCount(); i++ ){
-              if( echelonForm.getEntry( i, pivotColumn ) != 0.0 ){
-                nonzero = echelonForm.getEntry( i, pivotColumn ) * -1.0;
-                echelonForm.replace( i, pivotRow, nonzero );
-                matrix.replace( i, pivotRow, nonzero );
-              }
-            }
-
-            for( int j = pivotRow - 1; j >= 0; j--){
-              if( echelonForm.getEntry( j, pivotColumn ) != 0.0 ){
-                nonzero = echelonForm.getEntry( j, pivotColumn ) * -1.0;
-                echelonForm.replace( j, pivotRow, nonzero );
-                matrix.replace( j, pivotRow, nonzero );
-              }
-            }
-
-            reducedRowEchelon( pivotRow + 1, pivotColumn + 1, echelonForm, matrix );
-          }
-      }
-
 
       public boolean isSquare(){ return getRowCount() == getColumnCount(); }
 
@@ -432,7 +250,7 @@ public class Matrix{
           return vector;
       }
 
-      private void setColumnVector( int column, Matrix vector ) throws MatrixSizeMismatchException {
+      public void setColumnVector( int column, Matrix vector ) throws MatrixSizeMismatchException {
           if( vector.isColumnVector() && getRowCount() == vector.getRowCount() ){
             for( int i = 0; i < getRowCount(); i++ ){
               setEntry( i, column, vector.getEntry( i, 0 ) );
@@ -441,7 +259,6 @@ public class Matrix{
             throw new MatrixSizeMismatchException();
           }
       }
-
 
 
       // Variables
