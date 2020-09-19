@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import edu.codingisfunph.math.matrix.algorithms.GaussianElimination;
+import edu.codingisfunph.math.matrix.algorithms.GaussJordanElimination;
+
 
 public class Matrix{
 
@@ -268,27 +270,17 @@ public class Matrix{
 
           Matrix echelonForm = duplicate();
 
-          reducedRowEchelon( 0, 0, echelonForm, matrix );
+          GaussJordanElimination.reducedRowEchelon( echelonForm );
 
           return echelonForm;
       }
 
       public Matrix reducedRowEchelonForm() {
-
-          Matrix echelonForm = duplicate();
-
-          reducedRowEchelon( 0, 0, echelonForm );
-
-          return echelonForm;
+          return GaussJordanElimination.reducedRowEchelon( this );
       }
 
       public Matrix rowEchelonForm() {
-
-          Matrix echelonForm = duplicate();
-
-          rowEchelon( 0, 0, echelonForm );
-
-          return echelonForm;
+          return GaussianElimination.rowEchelon( this );
       }
 
 

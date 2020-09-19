@@ -112,7 +112,7 @@ public class MatrixControl extends VBox{
       }
 
       public void rowEchelonForm(){
-          matrix.copyEntries( GaussianElimination.rowEchelon( matrix ) );
+          matrix.copyEntries( matrix.rowEchelonForm() );
       }
 
       public void matrixPower( int value ){
