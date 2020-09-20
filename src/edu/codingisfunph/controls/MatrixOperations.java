@@ -10,7 +10,8 @@ public enum MatrixOperations{
         MATRIX_POWER( "Matrix Power" ),
         SCALE_ROW( "Scale Row" ),
         REPLACE_ROW( "Replace Row" ),
-        SWITCH_ROWS( "Switch Rows "),
+        SWITCH_ROWS( "Switch Rows"),
+        LAPLACE_EXPANSION( "Determinant (Laplace Expansion)" ),
         ROW_ECHELON( "Row Echelon" ),
         REDUCED_ROW_ECHELON( "Reduced Row Echelon" );
 

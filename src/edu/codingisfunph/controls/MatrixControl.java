@@ -119,6 +119,10 @@ public class MatrixControl extends VBox{
           matrix.copyEntries( matrix.power( value ) );
       }
 
+      public double laplaceExpansion(){
+          return matrix.laplaceExpansion();
+      }
+
       public boolean isMatrixSquare(){
           return matrix.isSquare();
       }
@@ -145,6 +149,7 @@ public class MatrixControl extends VBox{
           controlOperations.put( MatrixOperations.SCALE_ROW, new ScaleRowOperation( this ) );
           controlOperations.put( MatrixOperations.REPLACE_ROW, new ReplaceRowOperation( this ) );
           controlOperations.put( MatrixOperations.SWITCH_ROWS, new SwitchRowsOperation( this ) );
+          controlOperations.put( MatrixOperations.LAPLACE_EXPANSION, new LaplaceExpansionOperation( this ) );
           controlOperations.put( MatrixOperations.ROW_ECHELON, new RowEchelonOperation( this ) );
           controlOperations.put( MatrixOperations.REDUCED_ROW_ECHELON, new ReducedRowEchelonOperation( this ) );
           controlOperations.put( MatrixOperations.MATRIX_POWER, new MatrixPowerOperation( this ) );

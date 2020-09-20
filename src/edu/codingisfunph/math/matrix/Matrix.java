@@ -10,6 +10,7 @@ import edu.codingisfunph.math.matrix.algorithms.GaussianElimination;
 import edu.codingisfunph.math.matrix.algorithms.GaussJordanElimination;
 import edu.codingisfunph.math.matrix.algorithms.MatrixProduct;
 import edu.codingisfunph.math.matrix.algorithms.ElementaryOperation;
+import edu.codingisfunph.math.matrix.algorithms.MatrixDeterminant;
 
 
 public class Matrix{
@@ -115,6 +116,37 @@ public class Matrix{
 
       public Matrix scalarProduct( double scalarValue ){
           return MatrixProduct.scalarProduct( this, scalarValue );
+      }
+
+      public Matrix removeRow( int row ){
+          //if( getRows() > 1 ){
+          Matrix submatrix = new Matrix( getRowCount() - 1, getColumnCount() );
+
+          for( int i = 0, k = 0; i < getRowCount(); i++ ){
+              if( row == i ) continue;
+              for( int j = 0; j < getColumnCount(); j++ )
+                submatrix.setEntry( k, j, getEntry( i, j ) );
+              k++;
+          }
+
+          return submatrix;
+      }
+
+      public Matrix removeColumn( int column ){
+          Matrix submatrix = new Matrix( getRowCount(), getColumnCount() - 1 );
+
+          for( int i = 0; i < getRowCount(); i++ ){
+            for( int j = 0, k = 0; j < getColumnCount(); j++ ){
+              if( j == column ) continue;
+              submatrix.setEntry( i, k++, getEntry( i, j ) );
+            }
+          }
+
+          return submatrix;
+      }
+
+      public double laplaceExpansion(){
+          return MatrixDeterminant.laplaceExpansion( this );
       }
 
       /**
