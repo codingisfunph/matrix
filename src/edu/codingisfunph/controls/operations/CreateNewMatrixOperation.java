@@ -3,6 +3,7 @@ package edu.codingisfunph.controls.operation;
 import java.util.Optional;
 import edu.codingisfunph.math.matrix.Matrix;
 import edu.codingisfunph.controls.*;
+import edu.codingisfunph.controls.dialogs.MatrixDimensionDialog;
 
 public class CreateNewMatrixOperation implements MatrixControlOperation{
 

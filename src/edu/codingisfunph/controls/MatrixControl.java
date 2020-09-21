@@ -27,9 +27,6 @@ public class MatrixControl extends VBox{
           super( 8 );
           matrixGridPane.setHgap( DEFAULT_GAP );
           matrixGridPane.setVgap( DEFAULT_GAP );
-          scaleRowDialog = new ScaleRowDialog();
-          replaceRowDialog = new ReplaceRowDialog();
-          switchRowsDialog = new SwitchRowsDialog();
           actionChoices = createActionChoices();
           buildMatrixControlOperations();
 
@@ -172,10 +169,5 @@ public class MatrixControl extends VBox{
       private GridPane matrixGridPane = new GridPane();
       private HBox hbox = new HBox( 8 );
       private final static String CHOOSE = "Choose";
-      // Dialogs
-      private MatrixDimensionDialog matrixDimensionDialog;
-      private ScaleRowDialog scaleRowDialog;
-      private ReplaceRowDialog replaceRowDialog;
-      private SwitchRowsDialog switchRowsDialog;
       private Map< MatrixOperations, MatrixControlOperation > controlOperations = new HashMap< MatrixOperations, MatrixControlOperation >();
 }

@@ -5,6 +5,7 @@ import edu.codingisfunph.math.matrix.Matrix;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import edu.codingisfunph.controls.*;
+import edu.codingisfunph.controls.dialogs.ScaleRowDialog;
 
 public class ScaleRowOperation implements MatrixControlOperation{
 

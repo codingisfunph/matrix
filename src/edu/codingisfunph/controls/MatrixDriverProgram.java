@@ -22,7 +22,7 @@ public class MatrixDriverProgram extends Application{
           hbox.getChildren().add( matrixControl );
           hbox.setAlignment( Pos.CENTER );
 
-          primaryScene = new Scene( hbox, 400, 400);
+          primaryScene = new Scene( hbox, WIDTH, HEIGHT );
           primaryStage.setScene( primaryScene );
           primaryStage.show();
       }
@@ -42,4 +42,6 @@ public class MatrixDriverProgram extends Application{
       private int COLUMNS = 4;
       private int GAP = 2;
       private int ENTRY_SIZE = 60;
+      private static final int WIDTH = 500;
+      private static final int HEIGHT = 500;
 }

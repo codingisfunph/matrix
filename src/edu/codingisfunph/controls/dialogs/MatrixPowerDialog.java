@@ -24,16 +24,17 @@ public class MatrixPowerDialog extends Dialog< Integer >{
 
        private void addComponents(){
           GridPane grid = new GridPane();
+          integerSpinner.setValueFactory( integerValueFactory );
           grid.setHgap( 10 );
           grid.setVgap( 10 );
           grid.add( nonNegativeIntegerLabel, 1, 1 );
-          grid.add( integerTextField, 2, 1 );
+          grid.add( integerSpinner, 2, 1 );
           getDialogPane().setContent( grid );
           getDialogPane().getButtonTypes().add( okButton );
           setResultConverter( new Callback< ButtonType, Integer >(){
               public Integer call( ButtonType b ){
                     if( b ==  okButton ){
-                        return Integer.parseInt( integerTextField.getText() );
+                        return integerValueFactory.getValue();
                     }
                   return null;
               }
@@ -42,5 +43,6 @@ public class MatrixPowerDialog extends Dialog< Integer >{
 
        private ButtonType okButton = new ButtonType( "OK", ButtonData.OK_DONE );
        private Label nonNegativeIntegerLabel = new Label( "Non-negative integer:" );
-       private NumericTextField.IntegerTextField integerTextField = new NumericTextField.IntegerTextField();
+       private Spinner< Integer > integerSpinner = new Spinner< Integer >();
+       private SpinnerValueFactory< Integer > integerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 100, 1 );
 }

@@ -5,16 +5,10 @@ import edu.codingisfunph.math.matrix.*;
 public class MatrixProduct{
 
     public static Matrix power( Matrix matrix, int r ) throws NonSquareMatrixException {
-        if( matrix.isSquare() ){
-          Matrix matrixPower = Matrix.createIdentityMatrix( matrix.getRowCount() );
+        if( !matrix.isSquare() ) throw new NonSquareMatrixException();
 
-          for( int s = 0; s < r; s++)
-            matrixPower = matrixPower.multiply( matrix );
-
-            return matrixPower;
-          } else {
-            throw new NonSquareMatrixException();
-          }
+        if( r == 0 ) return Matrix.createIdentityMatrix( matrix.getRowCount() );
+        else return matrix.multiply( power( matrix, --r ) );
     }
 
     public static Matrix multiply( Matrix a, Matrix b ) throws MatrixSizeMismatchException{

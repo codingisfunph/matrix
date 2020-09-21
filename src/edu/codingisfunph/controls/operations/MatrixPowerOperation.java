@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import edu.codingisfunph.math.matrix.Matrix;
 import edu.codingisfunph.controls.*;
+import edu.codingisfunph.controls.dialogs.MatrixPowerDialog;
 
 public class MatrixPowerOperation implements MatrixControlOperation{
 

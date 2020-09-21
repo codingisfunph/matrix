@@ -30,5 +30,4 @@ public class LaplaceExpansionOperation implements MatrixControlOperation{
       }
 
       private MatrixControl matrixControl;
-      private MatrixPowerDialog matrixPowerDialog;
 }
